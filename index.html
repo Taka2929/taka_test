@@ -20,7 +20,9 @@
       --ink: #f4efe6;
       --ink-dim: #b8b0a6;
     }
-    html{ scroll-behavior: smooth; }
+    html{ scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body{ overflow-x: hidden; }
+    @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} .reveal{opacity:1;transform:none;transition:none} }
     body{
       background: var(--bg);
       color: var(--ink);
@@ -116,21 +118,22 @@
     }
 
     /* mobile nav */
-    #mobileMenu{ transform: translateY(-100%); opacity:0; transition: transform .35s ease, opacity .35s ease; }
-    #mobileMenu.open{ transform: translateY(0); opacity:1; }
+    #mobileMenu{ visibility:hidden; pointer-events:none; transform: translateY(-100%); opacity:0; transition: transform .35s ease, opacity .35s ease; }
+    #mobileMenu.open{ visibility:visible; pointer-events:auto; transform: translateY(0); opacity:1; }
   </style>
 </head>
 <body class="antialiased">
 
   <!-- glow decorations -->
   <div class="glow" style="width:480px;height:480px;top:-120px;left:-120px;background:var(--rose);"></div>
-  <div class="glow" style="width:420px;height:420px;top:20%;right:-140px;background:var(--gold);"></div>
+  <div class="glow" style="width:min(420px,100vw);height:420px;top:20%;right:0;background:var(--gold);"></div>
 
   <!-- NAV -->
   <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-[#0b0a0d]/70 border-b border-white/5">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="#" class="font-display text-xl tracking-widest text-[var(--gold-bright)]">SHIBUYA FLAMINGO</a>
       <nav class="hidden md:flex items-center gap-8 text-sm text-[var(--ink-dim)]">
+        <a href="#news" class="nav-link">NEWS</a>
         <a href="#about" class="nav-link hover:text-white">ABOUT</a>
         <a href="#cast" class="nav-link hover:text-white">CAST</a>
         <a href="#movie" class="nav-link hover:text-white">MOVIE</a>
@@ -138,12 +141,13 @@
         <a href="#access" class="nav-link hover:text-white">ACCESS</a>
       </nav>
       <a href="#contact" class="hidden md:inline-block btn-gold text-xs px-5 py-2 rounded-full">ご予約</a>
-      <button id="menuBtn" class="md:hidden text-white" aria-label="menu">
+      <button id="menuBtn" class="md:hidden text-white" aria-label="メニューを開閉" aria-expanded="false" aria-controls="mobileMenu">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
     </div>
     <div id="mobileMenu" class="md:hidden absolute inset-x-0 top-16 bg-[#0b0a0d] border-b border-white/5 px-6 py-6 flex flex-col gap-5 text-[var(--ink-dim)]">
-      <a href="#about" class="nav-link">ABOUT</a>
+      <a href="#news" class="nav-link">NEWS</a>
+        <a href="#about" class="nav-link">ABOUT</a>
       <a href="#cast" class="nav-link">CAST</a>
       <a href="#movie" class="nav-link">MOVIE</a>
       <a href="#price" class="nav-link">PRICE</a>
@@ -175,6 +179,26 @@
       </div>
     </div>
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--ink-dim)] text-xs tracking-widest animate-bounce">SCROLL</div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news" class="relative py-20 px-6 bg-[var(--bg-soft)]" aria-labelledby="news-title">
+    <div class="max-w-4xl mx-auto">
+      <p class="reveal text-[var(--gold)] tracking-[0.3em] text-xs mb-4">NEWS</p>
+      <h2 id="news-title" class="reveal font-display text-3xl md:text-4xl mb-8">最新情報</h2>
+      <div class="divide-y divide-white/10 border-y border-white/10">
+        <article class="reveal py-7">
+          <div class="flex items-center gap-4 text-xs mb-3"><time datetime="2026-10-12" class="text-[var(--ink-dim)]">2026.10.12</time><span class="text-[var(--gold-bright)]">CAST</span></div>
+          <h3 class="text-lg mb-2"><a href="#cast" class="hover:text-[var(--gold-bright)]">キャスト紹介に3枠を追加しました <span aria-hidden="true">→</span></a></h3>
+          <p class="text-sm text-[var(--ink-dim)] leading-7">Cast 04〜06を追加し、6枠のギャラリーになりました。既存写真を使用したイメージ掲載です。</p>
+        </article>
+        <article class="reveal py-7">
+          <div class="flex items-center gap-4 text-xs mb-3"><time datetime="2026-10-12" class="text-[var(--ink-dim)]">2026.10.12</time><span class="text-[var(--gold-bright)]">MOVIE</span></div>
+          <h3 class="text-lg mb-2"><a href="#cast-movie" class="hover:text-[var(--gold-bright)]">フォトムービーを公開しました <span aria-hidden="true">→</span></a></h3>
+          <p class="text-sm text-[var(--ink-dim)] leading-7">ギャラリーの写真をまとめた紹介動画を追加しました。MOVIEからご覧いただけます。</p>
+        </article>
+      </div>
+    </div>
   </section>
 
   <!-- ABOUT -->
@@ -222,8 +246,23 @@
             <p class="font-display text-lg">Cast 03</p>
           </div>
         </div>
+        <div class="reveal cast-card">
+          <img src="images/lp.pic1.jpg" alt="Cast 04のイメージ写真（既存素材）" loading="lazy" class="w-full h-[420px] object-cover">
+          <span class="absolute top-4 left-4 rounded-full bg-[#0b0a0d]/80 px-3 py-1 text-xs text-[var(--gold-bright)]">IMAGE</span>
+          <div class="cast-caption"><p class="font-display text-lg">Cast 04</p><p class="text-xs text-white/70 mt-1">イメージ掲載</p></div>
+        </div>
+        <div class="reveal cast-card">
+          <img src="images/lp.pic2.jpg" alt="Cast 05のイメージ写真（既存素材）" loading="lazy" class="w-full h-[420px] object-cover">
+          <span class="absolute top-4 left-4 rounded-full bg-[#0b0a0d]/80 px-3 py-1 text-xs text-[var(--gold-bright)]">IMAGE</span>
+          <div class="cast-caption"><p class="font-display text-lg">Cast 05</p><p class="text-xs text-white/70 mt-1">イメージ掲載</p></div>
+        </div>
+        <div class="reveal cast-card">
+          <img src="images/lp.pic3.jpg" alt="Cast 06のイメージ写真（既存素材）" loading="lazy" class="w-full h-[420px] object-cover">
+          <span class="absolute top-4 left-4 rounded-full bg-[#0b0a0d]/80 px-3 py-1 text-xs text-[var(--gold-bright)]">IMAGE</span>
+          <div class="cast-caption"><p class="font-display text-lg">Cast 06</p><p class="text-xs text-white/70 mt-1">イメージ掲載</p></div>
+        </div>
       </div>
-      <p class="reveal text-center mt-6 text-xs text-[var(--ink-dim)]">※写真はイメージです。</p>
+      <p class="reveal text-center mt-6 text-xs text-[var(--ink-dim)]">※写真はイメージです。Cast 04〜06は既存写真を再使用した紹介枠で、実在の在籍メンバーの追加を示すものではありません。</p>
     </div>
   </section>
 
@@ -240,10 +279,25 @@
     <div class="reveal max-w-4xl mx-auto">
       <div class="video-frame aspect-video">
         <!-- Runway生成後: videos/venue-highlight.mp4 を配置してください -->
-        <video controls playsinline poster="images/lp.pic2.jpg" class="w-full h-full object-cover">
+        <video controls playsinline preload="metadata" poster="images/lp.pic2.jpg" class="w-full h-full object-cover">
           <source src="videos/venue-highlight.mp4" type="video/mp4">
         </video>
       </div>
+    </div>
+  </section>
+
+  <!-- PHOTO MOVIE -->
+  <section id="cast-movie" class="px-6 pb-28" aria-labelledby="photo-movie-title">
+    <div class="max-w-4xl mx-auto reveal">
+      <p class="text-[var(--gold)] tracking-[0.3em] text-xs mb-3">PHOTO MOVIE</p>
+      <h2 id="photo-movie-title" class="font-display text-2xl mb-5">フラミンゴ フォトギャラリー</h2>
+      <div class="video-frame aspect-video">
+        <video controls playsinline preload="metadata" poster="images/lp.pic1.jpg" class="w-full h-full object-contain" aria-label="既存写真を使ったフラミンゴのフォトムービー（音声なし）">
+          <source src="videos/cast-gallery.webm" type="video/webm">
+          <p><a href="videos/cast-gallery.webm">フォトムービーをダウンロード</a></p>
+        </video>
+      </div>
+      <p class="text-xs text-[var(--ink-dim)] mt-4 leading-6">既存写真を使用したイメージムービーです（約12秒・音声なし）。</p>
     </div>
   </section>
 
@@ -331,8 +385,10 @@
     // mobile menu
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+    function setMenu(open){ mobileMenu.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); }
+    menuBtn.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('open')));
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') setMenu(false); });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
     // scroll reveal
     const io = new IntersectionObserver((entries) => {
